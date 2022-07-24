@@ -1,11 +1,14 @@
 # Common IntelliJ Platform excludes
 
 # User specific
+**/.idea/
 **/.idea/**/workspace.xml
 **/.idea/**/tasks.xml
 **/.idea/shelf/*
 **/.idea/dictionaries
 **/.idea/httpRequests/
+
+**/.vscode
 
 # Sensitive or high-churn files
 **/.idea/**/dataSources/
@@ -36,3 +39,4 @@ Desktop.ini
 
 /movies.db-shm
 /movies.db-wal
+
