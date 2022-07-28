@@ -8,7 +8,7 @@ using MovieAPI.Models;
 
 namespace APITests;
 
-record MovieListModel
+public class MovieListModel
 {
     private readonly List<Movie> _moviesFromDatabaseSeeding = DatabaseSeeding.MoviesForDatabaseSeeding;
     
