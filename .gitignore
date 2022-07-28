@@ -35,8 +35,12 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
-*.db
+<<<<<<< HEAD
+**/*.db*
+=======
+**/*.db
 
 /movies.db-shm
 /movies.db-wal
 
+>>>>>>> refs/remotes/origin/main
