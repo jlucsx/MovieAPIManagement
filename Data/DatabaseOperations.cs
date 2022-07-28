@@ -25,7 +25,21 @@ public class DatabaseOperations
         movieContext.AddRange(listOfMovies);
         movieContext.SaveChanges();
     }
+    public async ValueTask<List<Movie>> GetListOfMovies()
+    {
+        var movieContext = GetApplicationMovieContext();
+        var completeListOfMovies = await movieContext.Movies.ToListAsync();
+        return completeListOfMovies;
+    }
+    
+    public async ValueTask<Movie?> GetMovieWithId(long id)
+    {
+        var movieContext = GetApplicationMovieContext();
+        var idSpecifiedMovie = await movieContext.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
+        return idSpecifiedMovie;
+    }
     
     public DatabaseOperations(MovieContext movieContext)
         => MovieContext = movieContext;
+
 }
