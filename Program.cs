@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using MovieAPI.Data;
 using MovieAPI.Models;
 
@@ -20,17 +19,25 @@ app.UseHttpsRedirection();
 EnsureDatabaseIsCreated(app);
 PopulateDatabaseIfEmpty(app);
 
-app.MapGet("/", Handler);
+app.MapGet("/api/movies", (MovieContext dbContext) =>
+{
+    var databaseOperationsHandler = new DatabaseOperations(dbContext);
+    var resultContent = databaseOperationsHandler.GetListOfMovies();
+    return resultContent.Result.Count == 0 ?
+        Results.Ok( Enumerable.Empty<Movie>() ) : 
+        Results.Ok(resultContent.Result);
+});
+
+app.MapGet("/api/movies/{id:long}", (long id, MovieContext dbContext) =>
+{
+    var databaseOperationsHandler = new DatabaseOperations(dbContext);
+    var resultContent = databaseOperationsHandler.GetMovieWithId(id);
+    return resultContent.Result == null ? 
+        Results.Ok( Enumerable.Empty<Movie>() ) : 
+        Results.Ok(resultContent.Result);
+});
 app.Run();
 
-async ValueTask<List<Movie>> Handler()
-{
-    using var scope = app.Services.CreateScope();
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<MovieContext>();
-    var completeListOfMovies = await dbContext.Movies.ToListAsync();
-    return completeListOfMovies;
-}
 void EnsureDatabaseIsCreated(WebApplication webApplication)
 {
     using var scope = webApplication.Services.CreateScope();
