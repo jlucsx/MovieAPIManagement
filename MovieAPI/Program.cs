@@ -32,10 +32,23 @@ app.MapGet("/api/movies/{id:long}", (long id, MovieContext dbContext) =>
 {
     var databaseOperationsHandler = new DatabaseOperations(dbContext);
     var resultContent = databaseOperationsHandler.GetMovieWithId(id);
-    return resultContent.Result == null ? 
+    return resultContent.Result == null ?
         Results.Ok( Enumerable.Empty<Movie>() ) : 
         Results.Ok(resultContent.Result);
 });
+
+/*app.MapPost("/api/movies/add", (MovieContext dbContext, HttpRequest httpRequest) =>
+{
+    if (!httpRequest.HasJsonContentType()) 
+        return Results.Unauthorized();
+    var jsonContent = httpRequest.ReadFromJsonAsync<Movie>();
+    var databaseOperationsHandler = new DatabaseOperations(dbContext);
+    var changedRows = databaseOperationsHandler.AddMovie(jsonContent.Result!);
+    return changedRows == 1 ? 
+        Results.Ok() : 
+        Results.Problem();
+});*/
+    
 app.Run();
 
 void EnsureDatabaseIsCreated(WebApplication webApplication)

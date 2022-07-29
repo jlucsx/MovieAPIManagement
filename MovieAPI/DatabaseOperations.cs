@@ -13,11 +13,11 @@ public class DatabaseOperations
         var movieContext = GetApplicationMovieContext();
         return movieContext.Movies.Any();
     }
-    private void AddMovie(Movie movie)
+    public int AddMovie(Movie movie)
     {
         var movieContext = GetApplicationMovieContext();
         movieContext.Add(movie);
-        movieContext.SaveChanges();
+        return movieContext.SaveChanges();
     }
     public void AddListOfMovies(List<Movie> listOfMovies)
     {
