@@ -1,3 +1,4 @@
+using System.Net;
 using MovieAPI.Data;
 using MovieAPI.Models;
 
@@ -17,7 +18,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 EnsureDatabaseIsCreated(app);
-PopulateDatabaseIfEmpty(app);
 
 app.MapGet("/api/movies", (MovieContext dbContext) =>
 {
@@ -37,17 +37,39 @@ app.MapGet("/api/movies/{id:long}", (long id, MovieContext dbContext) =>
         Results.Ok(resultContent.Result);
 });
 
-/*app.MapPost("/api/movies/add", (MovieContext dbContext, HttpRequest httpRequest) =>
+app.MapPost("/api/movies/add", (MovieContext dbContext, HttpRequest httpRequest) =>
 {
-    if (!httpRequest.HasJsonContentType()) 
-        return Results.Unauthorized();
-    var jsonContent = httpRequest.ReadFromJsonAsync<Movie>();
-    var databaseOperationsHandler = new DatabaseOperations(dbContext);
-    var changedRows = databaseOperationsHandler.AddMovie(jsonContent.Result!);
-    return changedRows == 1 ? 
-        Results.Ok() : 
-        Results.Problem();
-});*/
+        if (!httpRequest.HasJsonContentType())
+            return Results.StatusCode((int)HttpStatusCode.UnsupportedMediaType);
+        Movie jsonContent;
+        try
+        {
+            jsonContent = TryToParseReceivedMovie(httpRequest);
+        }
+        catch (Exception)
+        {
+            return Results.BadRequest("Could not parse the body of the request according to the provided Content-Type.");
+        }
+        if (IsAnyPropertyWithIncorrectFormat(jsonContent))
+            return Results.BadRequest("Malformed request syntax");
+        var databaseOperationsHandler = new DatabaseOperations(dbContext);
+        bool isMovieAlreadyOnDatabase = databaseOperationsHandler.IsMovieAlreadyOnDatabase(dbContext, jsonContent).Result;
+        if (isMovieAlreadyOnDatabase) return Results.Conflict(
+            new {
+                Detail = "The movie already exists on the database"
+            });
+        long addedMovieId;
+        try
+        {
+            addedMovieId = databaseOperationsHandler.AddMovie(jsonContent).Result;
+        }
+        catch (Exception)
+        {
+            return Results.StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+
+        return Results.Created($"/api/movies/{addedMovieId}", null);
+});
     
 app.Run();
 
@@ -58,13 +80,19 @@ void EnsureDatabaseIsCreated(WebApplication webApplication)
     var moviesDatabaseContext = services.GetRequiredService<MovieContext>();
     moviesDatabaseContext.Database.EnsureCreated();
 }
-void PopulateDatabaseIfEmpty(WebApplication webApplication)
+
+bool IsAnyPropertyWithIncorrectFormat(Movie deserializedJsonFromPostRequest)
 {
-    using var scope = webApplication.Services.CreateScope();
-    var services = scope.ServiceProvider;
-    var moviesDatabaseContext = services.GetRequiredService<MovieContext>();
-    var databaseSeeder = new DatabaseSeeding(moviesDatabaseContext);
-    databaseSeeder.SeedDatabaseWithSampleData();
-}    
+    return deserializedJsonFromPostRequest.Title == null ||
+           deserializedJsonFromPostRequest.Author == null ||
+           deserializedJsonFromPostRequest.Description == null;
+}
+
+Movie TryToParseReceivedMovie(HttpRequest httpRequest)
+{
+    ValueTask<Movie> json = httpRequest.ReadFromJsonAsync<Movie>()!;
+    var movie = json.Result!;
+    return movie;
+}
 
 public partial class Program { }
