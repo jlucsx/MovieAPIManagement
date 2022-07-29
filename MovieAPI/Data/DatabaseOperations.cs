@@ -24,11 +24,16 @@ public class DatabaseOperations
         return completeListOfMovies;
     }
     
-    public async ValueTask<Movie?> GetMovieWithId(long id)
+    public async ValueTask<List<Movie>> GetMovieWithId(long id)
     {
         var movieContext = GetApplicationMovieContext();
+        var resultList = new List<Movie>();
         var idSpecifiedMovie = await movieContext.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
-        return idSpecifiedMovie;
+        if (idSpecifiedMovie != null)
+        {
+            resultList.Add(idSpecifiedMovie);
+        }
+        return resultList;
     }
 
     public async ValueTask<bool> IsMovieAlreadyOnDatabase(MovieContext movieDbContext, Movie movieFromPostRequest)
