@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/site.css">
+    <script src="./js/site.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="./index.html">Movie Management Service</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="./index.html">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container pb-3">
+        <h1 class="display-4">Movie Management Service</h1>
+        <h3 class="display-6">Add Movie</h3>
+        <form action="api/movies/add" class="mb-4" method="post">
+            <div class="row">
+                <div class="col">
+                    <label for="movie-title">Title</label>
+                    <input id="movie-title" type="text" min="1" class="form-control" placeholder="Title" aria-label="Movie Title" required>
+                </div>
+                <div class="col">
+                    <label for="movie-description">Description</label>
+                    <input id="movie-description" type="text" min="1" class="form-control" placeholder="Description" aria-label="Movie Description" required>
+                </div>
+                <div class="col">
+                    <label for="movie-author">Author</label>
+                    <input id="movie-author" type="text" min="1" class="form-control" placeholder="Author(s)" aria-label="Movie Author(s)" required>
+                </div>
+                <div class="col-12 mt-2">
+                    <button id="submit-btn" type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+        <h3 class="display-6">List Of Movies</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - MovieAPI poor front-end
+        </div>
+    </footer>
+<!--    <script>-->
+<!--        const tableBody = document.querySelector("tbody");-->
+<!--        const tableRow = document.createElement("tr");-->
+<!--        const tableData = []-->
+<!--        for (let i = 0; i < 3; i++)-->
+<!--            tableData[i] = document.createElement("td");-->
+<!--        const sampleData = ["Jacob", "Thornton", "@fat"];-->
+<!--        tableData.forEach((tdItem, index) => tdItem.textContent = sampleData[index]);-->
+<!--        tableData.forEach(item => tableRow.appendChild(item));-->
+<!--        tableBody.appendChild(tableRow);-->
+<!--    </script>-->
+</body>
+</html>

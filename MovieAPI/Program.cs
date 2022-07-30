@@ -14,6 +14,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 EnsureDatabaseIsCreated(app);
 
@@ -78,9 +79,9 @@ void EnsureDatabaseIsCreated(WebApplication webApplication)
 
 bool IsAnyPropertyWithIncorrectFormat(Movie deserializedJsonFromPostRequest)
 {
-    return deserializedJsonFromPostRequest.Title == null ||
-           deserializedJsonFromPostRequest.Author == null ||
-           deserializedJsonFromPostRequest.Description == null;
+    return deserializedJsonFromPostRequest.Title == string.Empty ||
+           deserializedJsonFromPostRequest.Author == string.Empty ||
+           deserializedJsonFromPostRequest.Description == string.Empty;
 }
 
 Movie TryToParseReceivedMovie(HttpRequest httpRequest)
