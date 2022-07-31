@@ -5,7 +5,7 @@ namespace MovieAPI.Data;
 
 public class MovieContext : DbContext
 {
-    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Movie>? Movies { get; set; }
     
     public string DbPath { get; }
     
