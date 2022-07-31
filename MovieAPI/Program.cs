@@ -4,6 +4,7 @@ using MovieAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.Services.AddCors();
 builder.Services.AddDbContext<MovieContext>();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -13,8 +14,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+app.UseCors(corsServiceOptions => {
+    corsServiceOptions.AllowAnyHeader();
+    corsServiceOptions.AllowAnyMethod();
+    corsServiceOptions.AllowAnyOrigin();
+});
+app.UseRouting();
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseFileServer();
 
 EnsureDatabaseIsCreated(app);
 
