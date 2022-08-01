@@ -37,8 +37,29 @@ function addToTableOfMovies(movie) {
     for (const movie of listOfMovies) {
         addToTableOfMovies(movie);
     }
-    document.querySelector("tbody>:last-child").scrollIntoView();
+	const queryLastRow = getLastRowOfTheTable();
+	if (!queryLastRow.found)
+        return;
+    const lastRow = queryLastRow.queryResult;
+    lastRow.scrollIntoView();
 })();
+
+function getLastRowOfTheTable() {
+  let queryResult = {};
+  let lastRow;
+  try {
+  	lastRow = document.querySelector("tbody>:last-child");
+    if (!lastRow) throw new Error('Empty table', 'No row found');
+    queryResult["found"] = true;
+	}
+	catch (Error) {
+  	queryResult["found"] = false;
+  }
+	finally {
+    queryResult["queryResult"] = lastRow;
+    return queryResult;
+  }
+}
 
 const createMovieForm = document.querySelector("form");
 createMovieForm.addEventListener("submit", 
@@ -47,7 +68,8 @@ createMovieForm.addEventListener("submit",
 async function submitForm(e, form) {
     e.preventDefault();
     const submitBtn = document.querySelector("#submit-btn");
-    submitBtn.disabled = true;
+
+	submitBtn.disabled = true;
     setTimeout(() => submitBtn.disabled = false, 2000);
     const jsonFormData = buildJsonFormData(form);
     const headers = buildHeaders();

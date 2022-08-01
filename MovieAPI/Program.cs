@@ -97,5 +97,3 @@ Movie TryToParseReceivedMovie(HttpRequest httpRequest)
     var movie = json.Result!;
     return movie;
 }
-
-public partial class Program { }
