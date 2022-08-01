@@ -10,7 +10,8 @@
 - clonar este projeto
   - `git clone https://github.com/jlucsx/StationOne-FirstProject-MovieAPIManagement.git`
 - dentro da pasta do projeto `cd StationOne-FirstProject-MovieAPIManagement`:
-  - no terminal, basta executar um `docker-compose up -d`
+  - no terminal execute `git checkout PostDeliverMain` para acessar a branch pós-entrega do projeto.
+  - depois basta executar um `docker-compose up -d`
     - pode ser necessário executar com direitos de administrador;
     - a flag -d é opcional (isso apenas faz com que o container execute em background).
 - para acessar a página demo, basta ir para `http://localhost:5000`
