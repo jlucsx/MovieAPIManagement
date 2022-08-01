@@ -1,0 +1,14 @@
+version: "2.6.1"
+  
+services:
+  app:
+    image: station_one_project:testproject
+    build: .
+    ports:
+      - 5000:80
+      - 5001:80
+    volumes:
+      - movieapi-db:/app
+
+volumes:
+  movieapi-db:
