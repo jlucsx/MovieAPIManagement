@@ -1,5 +1,5 @@
 # Projeto teste para Station One
-> Para itens adicionados após a entrega do projeto (dia 31/07 em diante), siga para a [branch PostDeliverMain](https://github.com/jlucsx/StationOne-FirstProject-MovieAPIManagement/tree/PostDeliverMain)
+> Para itens adicionados após a entrega do projeto (dia 31/07 em diante), siga para a [branch PostDeliverMain](https://github.com/jlucsx/MovieAPIManagement/tree/PostDeliverMain)
 ## Os Endpoints são:
 - `/api/movies/` para a listagem de filmes
 - `/api/movies/{id}/`, onde {id} é um int64, para consultar um filme por seu id
